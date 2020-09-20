@@ -1,5 +1,9 @@
 package com.codepath.bestsellerlistapp;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +41,13 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
 
     @Override
     public void onBindViewHolder(final BookViewHolder holder, int position) {
+
         holder.mItem = books.get(position);
         holder.mBookTitle.setText(books.get(position).title);
         holder.mBookAuthor.setText(books.get(position).author);
         holder.mRanking.setText(String.valueOf(books.get(position).rank));
         holder.mBookDescription.setText(books.get(position).description);
         holder.mBookDescription.setText(books.get(position).description);
-        //holder.mAmazonLink.setLinksClickable(books.get(position).amazonUrl);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +57,16 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
                     // fragment is attached to one) that an item has been selected.
                     mListener.onItemClick(holder.mItem);
                 }
+            }
+        });
+
+        final int pos = position;
+        holder.mAmazonLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri link = Uri.parse(books.get(pos).amazonUrl);
+                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, link);
+                holder.mView.getContext().startActivity(launchBrowser);
             }
         });
 
@@ -81,12 +95,12 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
         public BookViewHolder(View view) {
             super(view);
             mView = view;
-            mRanking = view.findViewById(R.id.ranking);
-            mBookImage = view.findViewById(R.id.book_image);
-            mBookTitle = view.findViewById(R.id.book_title);
-            mBookAuthor = view.findViewById(R.id.book_author);
-            mBookDescription = view.findViewById(R.id.book_description);
-            mAmazonLink = view.findViewById(R.id.buy_button);
+            mRanking = (TextView) view.findViewById(R.id.ranking);
+            mBookImage = (ImageView) view.findViewById(R.id.book_image);
+            mBookTitle = (TextView) view.findViewById(R.id.book_title);
+            mBookAuthor = (TextView) view.findViewById(R.id.book_author);
+            mBookDescription = (TextView) view.findViewById(R.id.book_description);
+            mAmazonLink = (Button) view.findViewById(R.id.buy_button);
         }
 
         @Override
